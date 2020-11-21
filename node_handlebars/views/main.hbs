@@ -1,0 +1,13 @@
+{{#prova_block_helper}}{{ ciao }}{{/prova_block_helper}}
+<h2>Il valore in dollari di un dogecoin è di: {{ dogecoin.ticker.price }}€!!!!</h2>
+{{> lovedChamps data=partial_data}}
+{{#prova_helper_partial true}} {{> hatedChamps}} {{/prova_helper_partial}}
+<h2>Liste of added heroes</h2>
+{{#if listExists}} 
+  <ul>
+    {{#each suggestedChamps}}
+      <li class={{this.lane}}>{{this.name}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
+<p>{{prova_helper_normale true ciao}}</p>

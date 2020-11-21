@@ -1,0 +1,24 @@
+{
+  "name": "express_handlebars_test",
+  "version": "1.0.0",
+  "description": "Progetto di prova utilizzando express.js e handlebars",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedepesso/node_handlebars.git"
+  },
+  "author": "Federico Pessina",
+  "license": "ISC",
+  "homepage": "",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
