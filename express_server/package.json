@@ -1,7 +1,7 @@
 {
-  "name": "express_handlebars_test",
+  "name": "express_server",
   "version": "1.0.0",
-  "description": "Progetto di prova utilizzando express.js e handlebars",
+  "description": "Server per pagine html dinamiche",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
@@ -17,11 +17,11 @@
   },
   "homepage": "https://github.com/fedepesso/homework#readme",
   "dependencies": {
-    "express": "^4.17.1",
-    "express-handlebars": "^5.2.0",
-    "node-fetch": "^2.6.1"
+    "express": "^4.17.1"
   },
   "devDependencies": {
+    "@soluzioni-futura/eslint-config-soluzioni-futura": "^1.2.0",
+    "eslint": "^7.14.0",
     "nodemon": "^2.0.6"
   }
 }
