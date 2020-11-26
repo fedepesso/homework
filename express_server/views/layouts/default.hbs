@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/default.css">
+    <title>Questa è la homepage</title>
+  </head>
+  <body style="background-color:{{palette.background}};">
+    <div class="container">
+        <div style='margin-top: 6px;'>
+            <nav class="navbar navbar-{{palette.navbar_text}}" style="background-color:{{palette.navbar}};">
+            <a class="navbar-brand">Navbar stupenda</a>
+            </nav>
+        </div>
+        <div style="margin-top: 5px; background-color:{{palette.content}}; height:100%; padding: 5px;">
+            {{{body}}}
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script>
+    const search_quotes = () => {
+        const link = document.createElement("a");
+        link.href = `/quotes?tag=${document.getElementById('input_form').value}&background=light`;
+        console.log(link.href)
+        link.click();
+    }
+</script>
+  </body>
+</html>
