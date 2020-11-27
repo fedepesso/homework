@@ -1,6 +1,6 @@
 <p>Riguardo {{search_term}} Donald Trump ha twittato: </p>
 <div>
     {{#each quotes}}
-        {{>quote_card text=this.value}}
+        {{>quote_card text=this.value date=this.appeared_at}}
     {{/each}}
 </div>

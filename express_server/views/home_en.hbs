@@ -1,6 +1,8 @@
-<p>Hello {{user}},</p>
-<p>You're using {{used_browser}}!</p>
+<p>Welcome back <b>{{user}}</b>,</p>
+<p>Your user agent is: <b>{{used_browser}}</b>!</p>
+<p>Discover what Donald Trump thinks about various topics: </p>
 <form class="form-inline">
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="search_quotes()">Search</button>
+    <button class="btn btn-{{palette.button_style}} my-2 my-sm-0" type="submit" onclick="search_quotes()">Search</button>
 </form>
+<p>Some examples:      Barack Obama, Women, Marco Rubio, Muammar Gaddafi, Bobby Jindal, Rick Perry, President Obama, Scott Walker, John McCain, Hillary Clinton, Arianna Huffington, Jeb Bush, Neil Young, History, Chris Christie, Muslims, Apologies, Ben Carson, Lindsey Graham, Ivanka Trump, Megyn Kelly, Ted Cruz, Donald Trump, Girlfriends, John Kasich, Money, Bette Midler, Bernie Sanders</p>
