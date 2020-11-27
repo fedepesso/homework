@@ -31,6 +31,9 @@ const search_palette = val => {
   if (val === undefined) { 
     return color_modes["light"] 
   }
+  if (color_modes[val] === undefined) {
+    return color_modes["light"] 
+  }
   return color_modes[val]
 }
 
@@ -55,7 +58,6 @@ server.get("/", (req, res) => {
   } else {
     res.render("home_en", { layout: "default", used_browser: req.headers["user-agent"], palette: search_palette(req.query.background), user })
   }
-    
 })
 
 server.get("/quotes", (req, res) => {
@@ -80,4 +82,4 @@ server.get("/quotes", (req, res) => {
 })
 
 // eslint-disable-next-line no-console
-server.listen(3000, () => console.log("Server avviato"))
+server.listen(8000, () => console.log("Server avviato"))
