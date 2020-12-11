@@ -1,0 +1,27 @@
+{
+  "name": "static_webserver",
+  "version": "1.0.0",
+  "description": "Server che restituisce risorse statiche e html dinamico utilizzando funzioni js custom",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedepesso/homework.git"
+  },
+  "author": "Federico Pessina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fedepesso/homework/issues"
+  },
+  "homepage": "https://github.com/fedepesso/homework#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@soluzioni-futura/eslint-config-soluzioni-futura": "^1.2.0",
+    "eslint": "^7.15.0",
+    "nodemon": "^2.0.6"
+  }
+}
