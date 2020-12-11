@@ -38,8 +38,8 @@ const substitute_partials = function(raw_string) {
     }
     const actual = partials[0]
     const raw_content = load_tpl(actual[0].slice(4, -3))
-    const content = substitute_partials(raw_content)
-    raw_string = insert_value(raw_string, actual[0], content, actual.index)
+    // const content = substitute_partials(raw_content)
+    raw_string = insert_value(raw_string, actual[0], raw_content, actual.index)
   }
 }
 

@@ -6,16 +6,16 @@ server.use(express.static("public"))
 
 engine.modify_settings({
   file_extension: ".tpl",
-  templates_directory: "/templates/",
+  templates_directory: "/templates/"
 })
 
 engine.add_helpers({
   spawn_list: arr => {
-    let result = "<ul>"
+    let result = ""
     arr.forEach(el => {
       result = result + "<li>" + el + "</li>"
     })
-    return result + "</ul>"
+    return result
   },
   saluta_vigorosamente: val => "Ciao " + val + "!!!!!"
 })
