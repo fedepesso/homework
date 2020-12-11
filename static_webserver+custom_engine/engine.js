@@ -6,7 +6,18 @@ const settings = {
   file_extension: ".tpl",
   templates_directory: "/templates/",
   block_regex: /-- [a-zA-Z0-9_]{1,64} --/g,
-  partial_regex: /--\/ [a-zA-Z0-9_]{1,64} --/g
+  partial_regex: /--\/ [a-zA-Z0-9_]{1,64} --/g,
+  helpers_regex: /--# [a-zA-Z0-9_ ]{1,64} --/g
+}
+
+const helpers_callbacks = {
+    fai_qualcosa: val => {
+        return val + "!!!!!"
+    }
+}
+
+const add_helper = function(key, callback) {
+    helpers_callbacks[key] = callback
 }
 
 const load_tpl = function(template_name) {
@@ -32,9 +43,23 @@ const substitute_partials = function(raw_string) {
     }
 }
 
+const execute_helpers = function(raw_string, data) {
+    while(true) {
+        const helpers = [...raw_string.matchAll(settings.helpers_regex)]
+        if (helpers.length === 0) {
+            return raw_string
+        }
+        const actual = helpers[0]
+        const string_fragments = actual[0].slice(4, -3).split(" ")
+        const signature = string_fragments.slice(1).map(val => data[val])
+        console.log(signature)
+        raw_string = insert_value(raw_string, actual[0], helpers_callbacks[string_fragments[0]](...signature), actual.index)
+    }
+}
+
 const render_template = function(template_name, data) {
     let raw = load_tpl(template_name)
-    let final = substitute_partials(raw)
+    let final = execute_helpers(substitute_partials(raw), data)
     while (true) {
         const blocks = [...final.matchAll(settings.block_regex)]
         if (blocks.length === 0) {
@@ -47,3 +72,4 @@ const render_template = function(template_name, data) {
 }
 
 module.exports.render_template = render_template
+module.exports.add_helper = add_helper

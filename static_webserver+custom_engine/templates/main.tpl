@@ -8,5 +8,6 @@
   </head>
   <body>
     --/ partial --
+    --# spawn_list example_array --
   </body>
 </html>
