@@ -13,11 +13,11 @@ let helpers_callbacks = {
 }
 
 const add_helpers = function(obj) {
-  helpers_callbacks = Object.assign({}, helpers_callbacks, obj)
+  helpers_callbacks = Object.assign(helpers_callbacks, obj)
 }
 
 const modify_settings = function(obj) {
-  settings = Object.assign({}, settings, obj)
+  settings = Object.assign(settings, obj)
 }
 
 const load_tpl = function(template_name) {
@@ -44,7 +44,7 @@ const substitute_partials = function(raw_string) {
 }
 
 const execute_helpers = function(raw_string, data) {
-  while(true) {
+  while (true) {
     const helpers = [...raw_string.matchAll(settings.helpers_regex)]
     if (helpers.length === 0) {
       return raw_string
@@ -57,6 +57,7 @@ const execute_helpers = function(raw_string, data) {
 }
 
 const render_template = function(template_name, data) {
+  // eslint-disable-next-line prefer-const
   let raw = load_tpl(template_name)
   let final = execute_helpers(substitute_partials(raw), data)
   while (true) {
