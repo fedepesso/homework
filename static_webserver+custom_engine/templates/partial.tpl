@@ -1,3 +1,3 @@
-<h1>-- nome --</h1>
-<p>-- cognome --</p>
---# fai_qualcosa valore_da_processare --
+<p>ciao -- nome_utente --</p>
+<p>--# saluta_vigorosamente nome_utente --</p>
+<p>Lista generata automaticamente:</p>
