@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   </head>
   <body>
-    <h1> -- ninini -- </h1>
-	<p> -- jijijn -- </p>
+    <h1> -- nome -- </h1>
+	<p> -- cognome -- </p>
   </body>
 </html>
