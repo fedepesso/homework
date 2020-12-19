@@ -3,9 +3,9 @@ const fs = require("fs")
 let settings = {
   file_extension: "",
   templates_directory: "",
-  block_regex: /-- [a-zA-Z0-9_]{1,64} --/g,
-  partial_regex: /--\/ [a-zA-Z0-9_]{1,64} --/g,
-  helpers_regex: /--# [a-zA-Z0-9_ ]{1,64} --/g
+  block_regex: /{{ [a-zA-Z0-9_]{1,64} }}/g,
+  partial_regex: /{{\/ [a-zA-Z0-9_]{1,64} }}/g,
+  helpers_regex: /{{# [a-zA-Z0-9_ ]{1,64} }}/g
 }
 
 let helpers_callbacks = {
@@ -71,6 +71,7 @@ const render_template = function(template_name, data) {
   }
 }
 
-module.exports.render_template = render_template
-module.exports.add_helpers = add_helpers
-module.exports.modify_settings = modify_settings
+const e = module.exports
+e.render_template = render_template
+e.add_helpers = add_helpers
+e.modify_settings = modify_settings

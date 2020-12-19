@@ -13,14 +13,14 @@
             <nav class="navbar navbar-light fixed-top-center"">
               <a class="navbar-brand">
                 <img src="icona.jpg" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy" style="border-radius: 5px; margin-left: 6px;">
-                -- titolo --
+                {{ titolo }}
               </a>
             </nav>
         </div>
         <div style="margin-top: 8px; height:100%; padding: 8px" id="content">
-            --/ partial --
+            {{/ partial }}
             <p>Lista generata automaticamente:</p>
-            <ul>--# spawn_list example_array --</ul>
+            <ul>{{# spawn_list example_array }}</ul>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
