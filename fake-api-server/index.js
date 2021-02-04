@@ -7,6 +7,7 @@ app.get("/", async (req, res) => {
     try {
         let data = await fetch("https://jsonplaceholder.typicode.com/posts")
         data = await data.json()
+        console.log(data)
         res.send(utils.homepage(data))
     } catch(err) {
         console.error(err)
