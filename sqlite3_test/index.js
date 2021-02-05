@@ -6,7 +6,7 @@ app.use(express.json())
 const db = new sqlite3.Database('user_data.sqlite3')
 
 db.serialize(()=> {
-    db.run("CREATE TABLE IF NOT EXISTS users (username TEXT, password TEXT)");
+    db.run("CREATE TABLE IF NOT EXISTS users (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT, password TEXT)");
   
     var stmt = db.prepare("INSERT INTO users VALUES (?,?)")
     for (let i = 0; i < 10; i++) {
