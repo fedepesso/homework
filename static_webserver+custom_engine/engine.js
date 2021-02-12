@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 const fs = require("fs")
 
 let settings = {

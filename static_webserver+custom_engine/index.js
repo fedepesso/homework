@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const express = require("express")
 const engine = require("./engine.js")
 const server = express()
@@ -30,5 +31,4 @@ server.get("/", (req, res) => {
   }))
 })
 
-// eslint-disable-next-line no-console
 server.listen(8000, () => console.log("Server avviato"))
