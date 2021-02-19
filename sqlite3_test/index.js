@@ -4,7 +4,7 @@ const express = require ("express")
 const app = new express()
 app.use(express.json())
 
-const db = new sqlite3.Database("user_data.sqlite3")
+const db = new sqlite3.Database("data.sqlite3")
 
 db.serialize(() => {
   db.run("CREATE TABLE IF NOT EXISTS users (username TEXT UNIQUE, password TEXT)")
