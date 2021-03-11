@@ -1,11 +1,16 @@
 const express = require("express")
 const server = new express()
 
-const field = []
-const ships = []
+let field = []
+let ships = []
+let leaderboard = {}
+let fetch_table = {}
+let active = true
+
 const W = process.argv[2] || 10
 const H = process.argv[3] || 10
 const S = process.argv[4] || 5
+const DEBUG_VIEW = Boolean(process.argv[5] || 1)
 
 const randint = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
@@ -19,10 +24,26 @@ const define_char = function(cell) {
     if (cell.ship) {
         if (cell.hit) {
             return "X"
+        } else {
+            if (DEBUG_VIEW) {
+                return "[]"
+            } else {
+                return "~"
+            }
         }
-        return "~"
+        
     }
     return "~"
+}
+
+const check_status = function() {
+    let concluded = true
+    ships.forEach(e => {
+        if (e.alive) {
+            concluded = false
+        }
+    })
+    return !concluded
 }
 
 for (let y = 0; y < H; y++) {
@@ -30,10 +51,8 @@ for (let y = 0; y < H; y++) {
     for (let x = 0; x < W; x++) {
         row.push({
             team: null,
-            x,
-            y,
             ship: null,
-            hit: true
+            hit: false
         })
     }
     field.push(row)
@@ -48,7 +67,6 @@ for (let i = 0; i < S; i++) {
         h: undefined,
         curHp: undefined,
         alive: true,
-        killTeam: null
     }
 
     let gen_attempts = 0
@@ -65,7 +83,7 @@ for (let i = 0; i < S; i++) {
         ship.curHp = ship.w * ship.h
 
         let validated = true
-        ships.map(e => {
+        ships.forEach(e => {
             if (verify_intersection(ship.x, ship.y, ship.w, ship.h, e.x, e.y, e.w, e.h)) {
                 validated = false
             }
@@ -119,12 +137,55 @@ server.get("/get-snapshot", ({ query: { format} }, res) => {
     }
 })
 
-server.get("/attack", ({ query: { x, y, team } }, res) => {  
-    res.json({x, y, team})
+server.get("/attack", ({ query: { x, y, team } }, res) => {
+    if (!active) {
+        res.send("La partita è finita: chiama /score per vedere la classifica finale.")
+    }
+    if (x < 0 || y < 0 || x > W - 1 || y > H - 1) {
+        res.status(400).send(`Inserire coordinate valide per un campo ${W}x${H}`)
+    }
+    if (fetch_table[team]) {
+        if (Date.now() - fetch_table[team] < 1000) {
+            res.status(403).send(`Esaurito il numero di richieste massimo per unità di tempo`)
+        } else {
+            fetch_table[team] = Date.now()
+        }
+    } else {
+        fetch_table[team] = Date.now()
+    }
+
+    if (!leaderboard[team]) {
+        leaderboard[team] = 0
+    }
+
+    if (field[y][x].ship) {
+        const ship = field[y][x].ship
+        if (ship.alive) {
+            if (!field[y][x].hit) {
+                field[y][x].hit = true
+                field[y][x].team = team
+                ship.curHp -= 1
+    
+                if (ship.curHp === 0) {
+                    ship.alive = false
+                    leaderboard[team] += ship.w * ship.h
+                    active = check_status()
+                    res.send({"hit": true, x, y, gain: ship.w*ship.h})
+                } else {
+                    res.send({"hit": true, x, y, gain: 0})
+                }
+            } else {
+
+                res.send({"hit": false, x, y, gain: 0})
+            }
+        }
+    } else {
+        res.send({"hit": false, x, y, gain: 0})
+    }
 })
 
 server.get("/score", (req, res) => {
-    res.json([])
+    res.json(leaderboard)
 })
 
 server.all("*", (req, res) => {
