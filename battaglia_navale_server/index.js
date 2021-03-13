@@ -140,13 +140,16 @@ server.get("/get-snapshot", ({ query: { format} }, res) => {
 server.get("/attack", ({ query: { x, y, team } }, res) => {
     if (!active) {
         res.send("La partita è finita: chiama /score per vedere la classifica finale.")
+        return undefined
     }
     if (x < 0 || y < 0 || x > W - 1 || y > H - 1) {
         res.status(400).send(`Inserire coordinate valide per un campo ${W}x${H}`)
+        return undefined
     }
     if (fetch_table[team]) {
         if (Date.now() - fetch_table[team] < 1000) {
             res.status(403).send(`Esaurito il numero di richieste massimo per unità di tempo`)
+            return undefined
         } else {
             fetch_table[team] = Date.now()
         }
@@ -175,7 +178,6 @@ server.get("/attack", ({ query: { x, y, team } }, res) => {
                     res.send({"hit": true, x, y, gain: 0})
                 }
             } else {
-
                 res.send({"hit": false, x, y, gain: 0})
             }
         }
