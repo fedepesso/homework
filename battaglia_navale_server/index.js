@@ -107,7 +107,15 @@ for (let i = 0; i < S; i++) {
 
 server.get("/get-snapshot", ({ query: { format} }, res) => {
     if (format === "json") {
-        res.send({field})
+        let public_field = []
+        for (let y = 0; y < H; y++) {
+            const row = []
+            for (let x = 0; x < W; x++) {
+                row.push(define_char(field[y][x]))
+            }
+            public_field.push(row)
+        }
+        res.send(public_field)
     } else {
         res.send(`
         <!DOCTYPE html>
