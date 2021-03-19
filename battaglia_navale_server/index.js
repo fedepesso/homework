@@ -183,14 +183,21 @@ server.get("/attack", ({ query: { x, y, team } }, res) => {
                     active = check_status()
                     res.send({"hit": true, x, y, gain: ship.w*ship.h})
                 } else {
-                    res.send({"hit": true, x, y, gain: 0})
+                    leaderboard[team] += 1
+                    res.send({"hit": true, x, y, gain: 1})
                 }
             } else {
-                res.send({"hit": false, x, y, gain: 0})
+                leaderboard[team] += -1
+                res.send({"hit": false, x, y, gain: -1})
             }
         }
     } else {
-        res.send({"hit": false, x, y, gain: 0})
+        if (field[y][x].hit) {
+            leaderboard[team] += -1
+                res.send({"hit": false, x, y, gain: -1})
+        } else {
+            res.send({"hit": false, x, y, gain: 0})
+        }
     }
 })
 
