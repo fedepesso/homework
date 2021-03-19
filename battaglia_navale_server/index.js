@@ -111,7 +111,7 @@ server.get("/get-snapshot", ({ query: { format} }, res) => {
         for (let y = 0; y < H; y++) {
             const row = []
             for (let x = 0; x < W; x++) {
-                row.push(define_char(field[y][x]))
+                row.push({char: define_char(field[y][x]), hit: field[y][x].hit})
             }
             public_field.push(row)
         }
@@ -151,7 +151,8 @@ server.get("/attack", ({ query: { x, y, team } }, res) => {
         return undefined
     }
     if (x < 0 || y < 0 || x > W - 1 || y > H - 1) {
-        res.status(400).send(`Inserire coordinate valide per un campo ${W}x${H}`)
+        leaderboard[team] += -5
+        res.status(400).send({"hit": false, x, y, gain: -5})
         return undefined
     }
     if (fetch_table[team]) {
