@@ -4,13 +4,14 @@ const server = new express()
 let field = []
 let ships = []
 let leaderboard = {}
+let teams = {}
 let fetch_table = {}
 let active = true
 
 const W = process.argv[2] || 10
 const H = process.argv[3] || 10
 const S = process.argv[4] || 5
-const DEBUG_VIEW = Boolean(process.argv[5] || 1)
+const DEBUG_VIEW = Boolean(process.argv[5] || 0)
 
 const randint = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
@@ -39,11 +40,9 @@ const define_char = function(cell) {
 const check_status = function() {
     let concluded = true
     ships.forEach(e => {
-        if (e.alive) {
-            concluded = false
-        }
+        concluded = !e.alive
     })
-    return !concluded
+    return concluded
 }
 
 for (let y = 0; y < H; y++) {
@@ -145,14 +144,18 @@ server.get("/get-snapshot", ({ query: { format} }, res) => {
     }
 })
 
-server.get("/attack", ({ query: { x, y, team } }, res) => {
+server.get("/attack", ({ query: { x, y, team, pwd } }, res) => {
     if (!active) {
         res.send("La partita è finita: chiama /score per vedere la classifica finale.")
         return undefined
     }
+    if (teams[team] !== pwd) {
+        res.status(401).send('La password fornita per il team è errata')
+        return undefined
+    }
     if (x < 0 || y < 0 || x > W - 1 || y > H - 1) {
         leaderboard[team] += -5
-        res.status(400).send({"hit": false, x, y, gain: -5})
+        res.status(400).send({"hit": false, x, y, gain: -5, "event": "stai sparando fuori dalla mappa"})
         return undefined
     }
     if (fetch_table[team]) {
@@ -162,12 +165,6 @@ server.get("/attack", ({ query: { x, y, team } }, res) => {
         } else {
             fetch_table[team] = Date.now()
         }
-    } else {
-        fetch_table[team] = Date.now()
-    }
-
-    if (!leaderboard[team]) {
-        leaderboard[team] = 0
     }
 
     if (field[y][x].ship) {
@@ -177,33 +174,43 @@ server.get("/attack", ({ query: { x, y, team } }, res) => {
                 field[y][x].hit = true
                 field[y][x].team = team
                 ship.curHp -= 1
-    
                 if (ship.curHp === 0) {
                     ship.alive = false
                     leaderboard[team] += ship.w * ship.h
-                    active = check_status()
-                    res.send({"hit": true, x, y, gain: ship.w*ship.h})
+                    active = !check_status()
+                    res.send({"hit": true, x, y, gain: ship.w*ship.h, "event": "nave affondata"})
                 } else {
                     leaderboard[team] += 1
-                    res.send({"hit": true, x, y, gain: 1})
+                    res.send({"hit": true, x, y, gain: 1, "event": "nave colpita"})
                 }
             } else {
                 leaderboard[team] += -1
-                res.send({"hit": false, x, y, gain: -1})
+                res.send({"hit": false, x, y, gain: -1, "event": "la nave è già stata colpita in questa cella"})
             }
+        } else {
+            leaderboard[team] += -1
+            res.send({"hit": false, x, y, gain: -1, "event": "stai sparando su una nave già affondata"})
         }
     } else {
         if (field[y][x].hit) {
             leaderboard[team] += -1
-                res.send({"hit": false, x, y, gain: -1})
+            res.send({"hit": false, x, y, gain: -1, "event": "cella già colpita"})
         } else {
-            res.send({"hit": false, x, y, gain: 0})
+            field[y][x].hit = true
+            res.send({"hit": false, x, y, gain: 0, "event": "colpo andato a vuoto"})
         }
     }
 })
 
 server.get("/score", (req, res) => {
     res.json(leaderboard)
+})
+
+server.get("/registrazione", ({ query: { team, pwd } }, res) => {
+    teams[team] = pwd
+    leaderboard[team] = 0
+    fetch_table[team] = Date.now()
+    res.send('Registrazione avvenuta con successo')
 })
 
 server.all("*", (req, res) => {
