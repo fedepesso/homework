@@ -146,22 +146,18 @@ server.get("/get-snapshot", ({ query: { format} }, res) => {
 
 server.get("/attack", ({ query: { x, y, team, pwd } }, res) => {
     if (!active) {
-        res.send("La partita è finita: chiama /score per vedere la classifica finale.")
-        return undefined
+        return res.send({res: "La partita è finita: chiama /score per vedere la classifica finale."})
     }
     if (teams[team] !== pwd) {
-        res.status(401).send('La password fornita per il team è errata')
-        return undefined
+        return res.status(401).send({res: 'La password fornita per il team è errata'})
     }
     if (x < 0 || y < 0 || x > W - 1 || y > H - 1) {
         leaderboard[team] += -5
-        res.status(400).send({"hit": false, x, y, gain: -5, "event": "stai sparando fuori dalla mappa"})
-        return undefined
+        return res.status(400).send({"hit": false, x, y, gain: -5, "event": "stai sparando fuori dalla mappa"})
     }
     if (fetch_table[team]) {
         if (Date.now() - fetch_table[team] < 1000) {
-            res.status(403).send(`Esaurito il numero di richieste massimo per unità di tempo`)
-            return undefined
+            return res.status(429).send({res: `Esaurito il numero di richieste massimo per unità di tempo`})
         } else {
             fetch_table[team] = Date.now()
         }
@@ -207,6 +203,9 @@ server.get("/score", (req, res) => {
 })
 
 server.get("/registrazione", ({ query: { team, pwd } }, res) => {
+    if (team in teams) {
+        return res.status(405).send({res: "Esiste già un team registrato con il nome fornito"})
+    }
     teams[team] = pwd
     leaderboard[team] = 0
     fetch_table[team] = Date.now()
