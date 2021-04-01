@@ -157,6 +157,7 @@ server.get("/attack", ({ query: { x, y, team, pwd } }, res) => {
     }
     if (fetch_table[team]) {
         if (Date.now() - fetch_table[team] < 1000) {
+            fetch_table[team] = Date.now()
             return res.status(429).send({res: `Esaurito il numero di richieste massimo per unità di tempo`})
         } else {
             fetch_table[team] = Date.now()
